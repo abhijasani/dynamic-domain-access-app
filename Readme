@@ -1,0 +1,10 @@
+Run Docker file : Docker Compose up --build -d
+
+when project is run there is 3 diff doamin run same frontend ( port : 4200 , 4400 , 4240)
+after access all doamin go to postgres database (id , password avalible in app-setting.json)
+manuuall edit state of domain to Approved , Rejected from pending
+then retuen to doamin and send login request or get data request Rejected Rejected domain will not working and send you 403 status code.
+this is how we can manage dynamic domain in .net api
+
+Docs file :
+https://docs.google.com/document/d/1nhUxNRDHRYEFovXWysGc4aOgxmhMX5gBticShyrsdCI/edit?usp=sharing

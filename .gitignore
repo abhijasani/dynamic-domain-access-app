@@ -1,0 +1,48 @@
+# =============== #
+# .NET (backend)  #
+# =============== #
+**/bin/
+**/obj/
+**/out/
+**/packages/
+**/TestResults/
+**/*.pdb
+**/*.mdb
+**/*.dbmdl
+**/*.log
+**/App_Data/
+**/App_Start/
+**/*.suo
+**/*.user
+**/.vs/
+**/.vscode/
+**/appsettings.Development.json
+**/secrets.json
+
+# ================ #
+# Angular (frontend)
+# ================ #
+**/frontend1/node_modules/
+**/frontend1/dist/
+**/frontend1/.angular/
+**/frontend1/.env
+**/frontend1/.env.*
+
+# =============== #
+# Docker          #
+# =============== #
+*.tar
+*.container
+*.image
+.dockerignore
+
+# =============== #
+# OS/System Files #
+# =============== #
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Optional: IDE settings
+.idea/
+*.code-workspace

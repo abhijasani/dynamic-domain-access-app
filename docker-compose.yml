@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile.backend
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - postgres
+  frontend:
+    build:
+      context: ./frontend1
+      dockerfile: ../Dockerfile.frontend
+    ports:
+      - "4240:80"
+
+  frontend1:
+    build:
+      context: ./frontend1
+      dockerfile: ../Dockerfile.frontend
+    ports:
+      - "4400:80"
+
+  frontend2:
+    build:
+      context: ./frontend1
+      dockerfile: ../Dockerfile.frontend
+    ports:
+      - "4200:80"
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: DynamicCorsDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
