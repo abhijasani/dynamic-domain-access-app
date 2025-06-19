@@ -1,31 +1,25 @@
 
----
 
 ## 🚀 Dynamic Domain Management in ASP.NET Core Web API
 
 ### 🔧 How It Works
 
-This project demonstrates how to **dynamically manage frontend domains** accessing a centralized ASP.NET Core Web API using CORS and PostgreSQL.
+This project demonstrates how to dynamically manage frontend domains accessing a centralized ASP.NET Core Web API using CORS and PostgreSQL.
 
----
 
-### 🐳 Step 1: Run the Full Stack with Docker
+🐳 Step 1: Run the Full Stack with Docker
 
 Start the complete application stack using Docker Compose:
 
-```bash
 docker-compose up --build -d
-```
 
 This will spin up:
 
-* **.NET Web API backend**
-* **Angular frontend served on multiple ports**
-* **PostgreSQL database for domain storage**
+* .NET Web API backend
+* Angular frontend served on multiple ports
+* PostgreSQL database for domain storage
 
----
-
-### 🌐 Step 2: Frontend Served on Multiple Domains
+🌐 Step 2: Frontend Served on Multiple Domains
 
 Once running, three different Angular frontend instances will be accessible at:
 
@@ -33,28 +27,25 @@ Once running, three different Angular frontend instances will be accessible at:
 * [http://localhost:4400](http://localhost:4400)
 * [http://localhost:4240](http://localhost:4240)
 
-All three share the same backend API but simulate access from **different domains**.
-
----
+All three share the same backend API but simulate access from different domains.
 
 ### 🗃️ Step 3: Domain Tracking in PostgreSQL
 
 When any frontend sends its first request (e.g., login or API call), the backend:
 
 1. Extracts the request’s `Origin` header.
-2. Looks up that origin in the **`AllowedOrigins`** table in PostgreSQL.
+2. Looks up that origin in the AllowedOrigins table in PostgreSQL.
 3. If not found:
 
    * The origin is inserted with a status of `"Pending"`.
-   * The request proceeds only if it’s a **public/unauthenticated endpoint**.
+   * The request proceeds only if it’s a public/unauthenticated endpoint.
 4. If the origin is found but:
 
-   * **`Status = "Rejected"`** → Request is blocked with **403 Forbidden**.
-   * **`Status = "Approved"`** → API proceeds and CORS headers are added dynamically.
+   * **`Status = "Rejected"` → Request is blocked with 403 Forbidden.
+   * **`Status = "Approved"` → API proceeds and CORS headers are added dynamically.
 
----
 
-### 🛠️ Step 4: Approve/Reject Domains Manually
+🛠️ Step 4: Approve/Reject Domains Manually
 
 Manually edit the domain statuses directly in the PostgreSQL database:
 
@@ -69,7 +60,7 @@ Manually edit the domain statuses directly in the PostgreSQL database:
 
 ---
 
-### 🔐 Step 5: Test Authentication Flow
+🔐 Step 5: Test Authentication Flow
 
 After approving a domain:
 
@@ -78,14 +69,9 @@ After approving a domain:
 3. Use the returned JWT token to access secure endpoints.
 
 If the domain is **rejected**, any request to a protected endpoint will fail with:
-
-```http
 403 Forbidden - Access Denied: Origin is Rejected.
-```
 
----
-
-### ✅ Summary
+✅ Summary
 
 | Domain Status | Behavior                                    |
 | ------------- | ------------------------------------------- |
