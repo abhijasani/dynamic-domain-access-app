@@ -1,10 +1,98 @@
-Run Docker file : Docker Compose up --build -d
 
-when project is run there is 3 diff doamin run same frontend ( port : 4200 , 4400 , 4240)
-after access all doamin go to postgres database (id , password avalible in app-setting.json)
-manuuall edit state of domain to Approved , Rejected from pending
-then retuen to doamin and send login request or get data request Rejected Rejected domain will not working and send you 403 status code.
-this is how we can manage dynamic domain in .net api
+---
+
+## 🚀 Dynamic Domain Management in ASP.NET Core Web API
+
+### 🔧 How It Works
+
+This project demonstrates how to **dynamically manage frontend domains** accessing a centralized ASP.NET Core Web API using CORS and PostgreSQL.
+
+---
+
+### 🐳 Step 1: Run the Full Stack with Docker
+
+Start the complete application stack using Docker Compose:
+
+```bash
+docker-compose up --build -d
+```
+
+This will spin up:
+
+* **.NET Web API backend**
+* **Angular frontend served on multiple ports**
+* **PostgreSQL database for domain storage**
+
+---
+
+### 🌐 Step 2: Frontend Served on Multiple Domains
+
+Once running, three different Angular frontend instances will be accessible at:
+
+* [http://localhost:4200](http://localhost:4200)
+* [http://localhost:4400](http://localhost:4400)
+* [http://localhost:4240](http://localhost:4240)
+
+All three share the same backend API but simulate access from **different domains**.
+
+---
+
+### 🗃️ Step 3: Domain Tracking in PostgreSQL
+
+When any frontend sends its first request (e.g., login or API call), the backend:
+
+1. Extracts the request’s `Origin` header.
+2. Looks up that origin in the **`AllowedOrigins`** table in PostgreSQL.
+3. If not found:
+
+   * The origin is inserted with a status of `"Pending"`.
+   * The request proceeds only if it’s a **public/unauthenticated endpoint**.
+4. If the origin is found but:
+
+   * **`Status = "Rejected"`** → Request is blocked with **403 Forbidden**.
+   * **`Status = "Approved"`** → API proceeds and CORS headers are added dynamically.
+
+---
+
+### 🛠️ Step 4: Approve/Reject Domains Manually
+
+Manually edit the domain statuses directly in the PostgreSQL database:
+
+* Connect using any DB tool (e.g., pgAdmin or DBeaver).
+* Navigate to the `AllowedOrigins` table.
+* Update the `Status` field to:
+
+  * `"Approved"` → Domain is allowed to call secure APIs.
+  * `"Rejected"` → Domain requests are blocked with `403 Forbidden`.
+
+> ✅ DB credentials can be found in `appsettings.json`.
+
+---
+
+### 🔐 Step 5: Test Authentication Flow
+
+After approving a domain:
+
+1. Navigate to that domain (e.g., `http://localhost:4200`).
+2. Send a login request.
+3. Use the returned JWT token to access secure endpoints.
+
+If the domain is **rejected**, any request to a protected endpoint will fail with:
+
+```http
+403 Forbidden - Access Denied: Origin is Rejected.
+```
+
+---
+
+### ✅ Summary
+
+| Domain Status | Behavior                                    |
+| ------------- | ------------------------------------------- |
+| Pending       | Stored in DB, request allowed if public     |
+| Approved      | CORS headers applied, secure API accessible |
+| Rejected      | Request blocked with 403 Forbidden          |
+
 
 Docs file :
 https://docs.google.com/document/d/1nhUxNRDHRYEFovXWysGc4aOgxmhMX5gBticShyrsdCI/edit?usp=sharing
